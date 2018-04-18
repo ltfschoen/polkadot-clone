@@ -15,5 +15,11 @@ Cloning the implementation at https://github.com/paritytech/polkadot of a https:
 * Run
 
     ```bash
-    cargo run
+    cargo run -- --help
+    
+    RUST_LOG=trace RUST_LOG_STYLE=auto \
+    cargo run -- -c -l "default.conf" collator
+    
+    RUST_LOG=error RUST_LOG_STYLE=auto \
+    cargo run -- -c -l "default.conf" validator
     ```
