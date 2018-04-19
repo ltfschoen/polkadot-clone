@@ -1,0 +1,24 @@
+name: polkadot-clone
+version: "0.1"
+author: Luke S. <ltfschoen@gmail.com>
+about: Implementation of Polkadot node in Rust
+args:
+  - log:
+      short: l
+      value_name: LOG
+      help: Sets custom logging
+      required: false
+      takes_value: true
+subcommands:
+  - collator:
+      about: Run collator node
+      args:
+        - c:
+            short: c
+            help: collator in debug mode
+  - validator:
+      about: Run validator node
+      args:
+        - v:
+            short: v
+            help: validator in debug mode

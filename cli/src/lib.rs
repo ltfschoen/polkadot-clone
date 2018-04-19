@@ -1,55 +1,42 @@
-extern crate clap;
-#[macro_use] extern crate log;
 extern crate env_logger;
 
-use clap::{Arg, App, SubCommand};
+#[macro_use]
+extern crate clap;
+#[macro_use]
+extern crate log;
 
 pub fn main() {
-	let matches = App::new("Polkadot-clone")
-		.version("0.1")
-		.author("Luke S. <ltfschoen@gmail.com>")
-		.about("Implementation Polkadot node in Rust")
-		.arg(Arg::with_name("log")
-			.short("l")
-			.value_name("LOG")
-			.help("Sets logging.")
-			.required(false)
-			.takes_value(true))
-		.subcommand(SubCommand::with_name("collator"))
-			.arg(Arg::with_name("c")
-				.short("c")
-				.help("collator in debug mode"))
-		.subcommand(SubCommand::with_name("validator"))
-			.arg(Arg::with_name("v")
-				.short("v")
-				.help("validator in debug mode"))
-		.get_matches();
+	let yaml = load_yaml!("cli.yml");
+	let matches = clap::App::from_yaml(yaml).get_matches();
 
 	// Gets value for config if supplied by user, or default to "default.conf"
 	let log_pattern = matches.value_of("log").unwrap_or("default.conf");
 	init_logger(log_pattern);
-	println!("Value for config log pattern: {}", log_pattern);
+	info!("Value for config log pattern: {}", log_pattern);
 
 	// Handle subcommand information by requesting matches by name
 	// Calling `.unwrap()` not safe since value required so use `if let`
 	// to conditionally get value
 	if let Some(_) = matches.subcommand_matches("collator") {
 		if matches.is_present("c") {
-			println!("Running as collator in debug mode...");
+			info!("Starting collator in debug mode...");
 		} else {
-			println!("Running as collator normally...");
+			info!("Starting collator normally...");
 		}
 		return;
 	}
 
 	if let Some(_) = matches.subcommand_matches("validator") {
 		if matches.is_present("v") {
-			println!("Running as validator in debug mode...");
+			info!("Starting validator in debug mode...");
 		} else {
-			println!("Running as validator normally...");
+			info!("Starting validator normally...");
 		}
 		return;
 	}
+
+	println!("No command given.\n");
+	let _ = clap::App::from_yaml(yaml).print_long_help();
 }
 
 

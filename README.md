@@ -23,3 +23,7 @@ Cloning the implementation at https://github.com/paritytech/polkadot of a https:
     RUST_LOG=error RUST_LOG_STYLE=auto \
     cargo run -- -c -l "default.conf" validator
     ```
+    
+# Debug
+
+* Run with `RUST_BACKTRACE=1`
